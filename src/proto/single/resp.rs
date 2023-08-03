@@ -109,15 +109,14 @@ enum RawResponse {
 
 fn read<R: BufRead>(mut r: R) -> Result<RawResponse, Error> {
     let mut cmdbuf = [0u8; 1];
-    let now = std::time::Instant::now();
-    r.read_exact(&mut cmdbuf)?;
-    println!("Read command in {} ms", now.elapsed().as_millis());
+    r.read(&mut cmdbuf)?;
     match cmdbuf[0] {
         b'+' => {
-            let now = std::time::Instant::now();
+            // Simple String
+            // https://redis.io/topics/protocol#resp-simple-strings
             let mut s = String::new();
             r.read_line(&mut s)?;
-            println!("Read line in {} ms", now.elapsed().as_millis());
+
             // remove newlines
             let l = s.len() - 2;
             s.truncate(l);
