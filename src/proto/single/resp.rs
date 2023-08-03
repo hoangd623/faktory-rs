@@ -109,7 +109,7 @@ enum RawResponse {
 
 fn read<R: BufRead>(mut r: R) -> Result<RawResponse, Error> {
     let mut cmdbuf = [0u8; 1];
-    r.read(&mut cmdbuf)?;
+    r.read_exact(&mut cmdbuf)?;
     match cmdbuf[0] {
         b'+' => {
             // Simple String

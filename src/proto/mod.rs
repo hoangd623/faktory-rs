@@ -135,9 +135,8 @@ impl<S: Read + Write> Client<S> {
 
 impl<S: Read + Write> Client<S> {
     fn init(&mut self) -> Result<(), Error> {
-        let now = std::time::Instant::now();
+        &mut self.stream.flush()?;
         let hi = single::read_hi(&mut self.stream)?;
-        println!("Hi received in {} ms", now.elapsed().as_millis());
         if hi.version != EXPECTED_PROTOCOL_VERSION {
             return Err(error::Connect::VersionMismatch {
                 ours: EXPECTED_PROTOCOL_VERSION,

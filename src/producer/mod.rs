@@ -88,7 +88,6 @@ impl Producer<TcpStream> {
         }?;
         let now = std::time::Instant::now();
         let stream = TcpStream::connect(proto::host_from_url(&url))?;
-        println!("Stream connected in {} ms", now.elapsed().as_millis());
         Self::connect_with(stream, url.password().map(|p| p.to_string()))
     }
 }
